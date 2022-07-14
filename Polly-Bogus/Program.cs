@@ -15,9 +15,9 @@ foreach (var item in persons)
     Console.WriteLine(item.Id + " - " + item.Name + " - " + item.Email + " skapad: " + item.CreatedDate.ToString());
 }
 
-AsyncRetryPolicy<bool> retryPolicyNeedsTrueResponse = Policy.HandleResult<bool>(b => !b)
-    .WaitAndRetryAsync(3, retryAttempt =>
-            TimeSpan.FromSeconds(Math.Pow(2, retryAttempt) / 2));
+AsyncRetryPolicy<bool> retryPolicyNeedsTrueResponse = Policy
+    .HandleResult<bool>(result => !result)
+    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt) / 2));
 
 bool result = await retryPolicyNeedsTrueResponse.ExecuteAsync(() => IsConnected());
 
@@ -29,7 +29,7 @@ async Task<bool> IsConnected()
 }
 
 
-Console.WriteLine(result);
+Console.WriteLine("resultat = " + result);
 
 public class Person
 {
